@@ -1,0 +1,35 @@
+<project name="Tron" basedir="." default="main">
+
+    <property name="src.dir"     value="src"/>
+    <property name="build.dir"   value="build"/>
+    <property name="config.dir"  value="${build.dir}/config"/>
+    <property name="main-class"  value="tron.Main"/>
+
+    <target name="main" depends="jar"/>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${config.dir}"/>
+        <copy file="${src.dir}/config/defaults.properties" todir="${config.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${ant.project.name}.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${ant.project.name}.jar" fork="true"/>
+    </target>
+
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete file="${ant.project.name}.jar"/>
+    </target>
+
+</project>
